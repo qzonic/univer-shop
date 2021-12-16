@@ -1,0 +1,42 @@
+{%extends "base.html"%}
+
+
+{%block content%}
+<div class="row">
+    <div class="last__products col-md-3">
+
+          <ul class="list-group">
+			  <li class="list-group-item text-center"><strong>Последние добавленные предметы</strong></li>
+            {%for item in latest_categories%}
+			  <a href="{%url 'category_product' slug=item.slug%}"><li class="list-group-item text-center" data-tooltip="{{item.title}}">{{item.title|truncatechars:26}}</li></a>
+            {%endfor%}
+          </ul>
+    </div>
+    <div class="main__products col-md-9">
+        <div class="row">
+        {%for product in products%}
+            <div class="col-md-4">
+                <div class="card text-center">
+                  <div class="card-body">
+                    <h5 class="card-title" data-tooltip="{{product.title}}">{{product.title|truncatechars:26}}</h5>
+                      <p class="card-text">{{product.category}}</p>
+                      <p class="card-text">{{product.price}} руб.</p>
+                      {%if request.user.is_authenticated%}
+                    {% if product not in cart.products_in_cart %}
+                                    <a href="{% url 'add_to_cart' ct_model=product.ct_model slug=product.slug %}">
+                                        <button class="btn btn-primary">Добавить в корзину</button>
+                                    </a>
+                                {% else %}
+                                    <a href="#" class="btn btn-default" disabled="">Добавлен в корзину</a>
+                                {% endif %}
+                      {%else%}
+                      <p>Только авторизованные пользователи могут совершать покупки, <a href="{%url 'login'%}">авторизоваться</a></p>
+                      {%endif%}
+                  </div>
+                </div>
+            </div>
+        {%endfor%}
+        </div>
+    </div>
+</div>
+{%endblock content%}

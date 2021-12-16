@@ -1,0 +1,31 @@
+{%extends "base.html"%}
+
+
+{%block content%}
+<div class="row">
+    <div class="last__products col-md-3">
+
+          <ul class="list-group">
+			  <li class="list-group-item text-center"><strong>Последние добавленные предметы</strong></li>
+            {%for item in latest_categories%}
+			  <a href="{%url 'category_product' slug=item.slug%}"><li class="list-group-item text-center" data-tooltip="{{item.title}}">{{item.title|truncatechars:26}}</li></a>
+            {%endfor%}
+          </ul>
+    </div>
+    <div class="main__products col-md-9">
+        <div class="row">
+        {%for category in categories%}
+            <div class="col-md-4">
+                <div class="card text-center">
+                  <div class="card-body">
+                      <a href="{%url 'category_product' slug=category.slug%}">
+                          <h5 class="card-title" data-tooltip="{{category.title}}">{{category.title|truncatechars:26}}</h5>
+                      </a>
+                  </div>
+                </div>
+            </div>
+        {%endfor%}
+        </div>
+    </div>
+</div>
+{%endblock content%}

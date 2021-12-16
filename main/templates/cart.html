@@ -1,0 +1,54 @@
+{% extends 'base.html' %}
+
+{%block content%}
+
+    <h3 class="text-center mt-5 mb-5">Вашa корзина {% if not cart.products.count %}пуста{% endif %}</h3>
+
+    {% if messages %}
+        {% for message in messages %}
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                <strong>{{ message }}</strong>
+                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-lable="Close"></button>
+            </div>
+        {% endfor %}
+    {% endif %}
+
+    {% if cart.products.count %}
+
+        <table class="table text-center">
+            <thead>
+                <tr>
+                    <td colspan="2"></td>
+                    <th scope="col">Наименование</th>
+                    <th scope="col">Цена</th>
+                    <th scope="col">Действие</th>
+                </tr>
+            </thead>
+            <tbody>
+
+                {% for item in cart.products.all %}
+                    <tr>
+                        <td colspan="2"></td>
+                        <th scope="row">{{ item.content_object.title }}</th>
+                        <td>{{ item.content_object.price }} руб.</td>
+                        <td>
+                            <a href="{% url 'delete_from_cart' ct_model=item.content_object.ct_model slug=item.content_object.slug %}">
+                                <button class="btn btn-danger"><i class="far fa-trash-alt"></i></button>
+                            </a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                <tr>
+                    <td colspan="2"></td>
+                    <td>Итого:</td>
+                    <td>{{cart.total_products}}</td>
+                    <td><strong>{{cart.final_price}} руб.</strong></td>
+                    <td><a href="{%url 'checkout'%}"><button class="btn btn-primary">Перейти к офрормлению</button></a></td>
+                </tr>
+            </tbody>
+        </table>
+
+    {% endif %}
+
+
+{%endblock%}
